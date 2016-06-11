@@ -5,13 +5,10 @@ import java.util.Collection;
  * Created by Radek on 2016-06-07.
  */
 public class SilnikWnioskujacy {
-    private static Collection<Fact> facts = new ArrayList<Fact>();
-    private static Collection<Rule> rules = new ArrayList<Rule>();
+    private static Collection<Fact> facts = new ArrayList<>();
+    private static Collection<Rule> rules = new ArrayList<>();
     private static Variable wanted;
     private static Mode mode = Mode.backward;
-
-    public static String exampleFact = "A = 1";
-    public static String exampleRule = "B = A";
 
     public static void main(String[] args) {
         Initializer.Initialize();
@@ -42,8 +39,8 @@ public class SilnikWnioskujacy {
         return mode;
     }
 
-    public static void setMode(Mode mode) {
-        mode = mode;
+    public static void setMode(Mode mod) {
+        mode = mod;
     }
 
     public static void setWanted(Variable in) {
@@ -63,11 +60,8 @@ public class SilnikWnioskujacy {
             System.out.println(facts.size() + " " + index);
             if (facts.size() > index) {
                 ArrayList<Fact> list = new ArrayList<>(getFacts());
-                System.out.println(index);
                 list.remove(index);
-                System.out.println(list);
                 setFacts(list);
-                System.out.println(facts);
             } else {
                 index -= facts.size();
                 ArrayList<Rule> list = new ArrayList<>(getRules());

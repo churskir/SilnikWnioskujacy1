@@ -10,7 +10,7 @@ public class Solver {
         if (mode.equals(Mode.backward))
         try {
                 Boolean bool = wanted.solve(facts);
-                GUI.print("Wartość zmiennej " + wanted + " jest znana: " + wanted + " = " + bool);
+                GUI.print(wanted + " = " + bool);
                 return bool;
             }catch (NoFactException e) {
                 GUI.print("Nie udało się uzyskać wartości zmiennej " + wanted + ".");

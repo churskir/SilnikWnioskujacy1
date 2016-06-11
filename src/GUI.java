@@ -29,7 +29,7 @@ public class GUI {
         frame.setTitle("Silnik Wnioskujący");
         MetalLookAndFeel.setCurrentTheme(new OceanTheme());
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         frame.add(mainPanel);
@@ -166,7 +166,6 @@ public class GUI {
                                                   else
                                                       SilnikWnioskujacy.setMode(Mode.forward);
                                                   SilnikWnioskujacy.setWanted(new Variable(wanted.getText()));
-                                                  System.out.println("A");
                                                   Solver.solve(SilnikWnioskujacy.getFacts(),
                                                           SilnikWnioskujacy.getRules(),
                                                           SilnikWnioskujacy.getWanted(),
