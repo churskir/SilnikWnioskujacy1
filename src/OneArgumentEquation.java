@@ -16,6 +16,14 @@ public class OneArgumentEquation extends Equation {
         return operator.solve(equation.solve(facts));
     }
 
+    public Equation getEquation() {
+        return equation;
+    }
+
+    public Boolean equals(OneArgumentEquation equation) {
+        return this.equation.equals(equation.equation) && this.operator.equals(equation.operator);
+    }
+
     @Override
     public String toString() {
         String tmp = operator.toString() + equation.toString();

@@ -7,15 +7,17 @@ import java.util.Collection;
  */
 public class Solver {
     public static Boolean solve(Collection<Fact> facts, Collection<Rule> rules, Variable wanted, Mode mode) {
-        if (mode.equals(Mode.backward))
-        try {
+        if (mode.equals(Mode.backward)) {
+            try {
                 Boolean bool = wanted.solve(facts);
-                GUI.print(wanted + " = " + bool);
+                GUI.print(" ");
+                GUI.print("Szukana " + wanted + " = " + bool);
                 return bool;
-            }catch (NoFactException e) {
+            } catch (NoFactException e) {
                 GUI.print("Nie udało się uzyskać wartości zmiennej " + wanted + ".");
                 return null;
             }
+        }
         return solveForward(facts, rules, wanted);
     }
 
@@ -24,13 +26,16 @@ public class Solver {
         for (Rule rule: rules) {
             try {
                 result = rule.solve(facts);
-                facts.add(new Fact(rule.getResult(), result));
-                GUI.print("Z reguły " + rule + " wynika: " + rule.getResult() + " = " + result);
-                return result;
+                Fact fact = new Fact(rule.getResult(), result);
+                if (!SilnikWnioskujacy.isKnown(fact)) {
+                    GUI.print("Z reguły " + rule + " wynika: " + rule.getResult() + " = " + result);
+                    SilnikWnioskujacy.addFact(fact);
+                    return true;
+                }
             } catch (NoFactException e) {
             }
         }
-        return Boolean.FALSE;
+        return false;
     }
 
     /*
@@ -38,7 +43,10 @@ public class Solver {
      */
     private static Boolean solveForward(Collection<Fact> facts, Collection<Rule> rules, Variable wanted) {
         try {
-            return wanted.solve(facts);
+            Boolean result = wanted.solve(facts);
+            GUI.print(" ");
+            GUI.print("Szukana " + wanted + " = " + result);
+            return result;
         } catch (NoFactException e) {
         }
         while (solveAnyRule(facts, rules, wanted)) {

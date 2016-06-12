@@ -7,10 +7,12 @@ import java.util.Collection;
 public class Rule {
     private Variable result;
     private Equation equation;
+    private int weight;
 
-    public Rule(Variable result, Equation equation) {
+    public Rule(Variable result, Equation equation, int weight) {
         this.result = result;
         this.equation = equation;
+        this.weight = weight;
     }
 
     public Rule(String in) {
@@ -23,6 +25,7 @@ public class Rule {
         inList.remove(0);
         inList.remove(0);
 
+        setWeight(inList.size());
         setEquation(EquationBuilder.BuildEquation(inList));
     }
 
@@ -34,12 +37,24 @@ public class Rule {
         this.equation = equation;
     }
 
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     public Boolean solve(Collection<Fact> facts) throws NoFactException{
         return equation.solve(facts);
     }
 
     public Variable getResult() {
         return result;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public Boolean equals(Rule rule) {
+        return this.toString().equals(rule.toString());
     }
 
     @Override

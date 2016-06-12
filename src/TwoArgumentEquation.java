@@ -18,6 +18,10 @@ public class TwoArgumentEquation extends Equation {
         return operator.solve(left.solve(facts), right.solve(facts));
     }
 
+    public Boolean equals(TwoArgumentEquation equation) {
+        return this.left.equals(equation.left) && this.right.equals(equation.left) && this.operator.equals(equation.operator);
+    }
+
     @Override
     public String toString() {
         return left.toString() + " " + operator.toString() + " " + right.toString();

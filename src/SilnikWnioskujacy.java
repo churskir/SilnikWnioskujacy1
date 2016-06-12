@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by Radek on 2016-06-07.
@@ -13,6 +14,8 @@ public class SilnikWnioskujacy {
     public static void main(String[] args) {
         Initializer.Initialize();
         GUI.openWindow();
+        Rule rule = new Rule("A = B + C");
+        Rule rule2 = new Rule("A = B + C");
     }
 
     public static Collection<Fact> getFacts() {
@@ -47,17 +50,50 @@ public class SilnikWnioskujacy {
         wanted = in;
     }
 
+    public static boolean isKnown(Fact fact) {
+        for (Fact tmp: facts)
+            if (tmp.equals(fact))
+                return true;
+        return false;
+    }
+
     public static void addFact(Fact fact) {
+/*        for (Fact tmp: facts)
+            if (tmp.equals(fact)) {
+                GUI.clearOutput();
+                GUI.print(fact.toString() + ": taki fakt już istnieje.");
+                return false;
+            } */
+        if (isKnown(fact)) {
+            GUI.clearOutput();
+            GUI.print(fact.toString() + ": taki fakt już istnieje.");
+            return;
+        }
         facts.add(fact);
+        GUI.print("Dodano nowy fakt: " + fact);
     }
 
     public static void addRule(Rule rule) {
-        rules.add(rule);
+        for (Rule tmp: rules)
+            if (tmp.equals(rule)) {
+                GUI.clearOutput();
+                GUI.print(rule + ": reguła już istnieje.");
+                return;
+            }
+        if (rules.size() > 0)
+            addRuleInOrder(rule);
+        else
+            rules.add(rule);
+    }
+
+    public static void makeRulesInReverseOrder() {
+        ArrayList<Rule> newRules = new ArrayList<>(rules);
+        Collections.reverse(newRules);
+        rules = newRules;
     }
 
     public static void deleteThing(int index) {
         if (index > -1) {
-            System.out.println(facts.size() + " " + index);
             if (facts.size() > index) {
                 ArrayList<Fact> list = new ArrayList<>(getFacts());
                 list.remove(index);
@@ -69,5 +105,21 @@ public class SilnikWnioskujacy {
                 setRules(list);
             }
         }
+    }
+
+    private static void addRuleInOrder(Rule rule) {
+        ArrayList<Rule> newRules = new ArrayList<>();
+        Boolean notAdded = true;
+        for (Rule tmp: rules) {
+            if ((tmp.getWeight() > rule.getWeight()) && (notAdded)) {
+                newRules.add(rule);
+                notAdded = false;
+            }
+            newRules.add(tmp);
+        }
+        if (rules.size() == newRules.size())
+            rules.add(rule);
+        else
+            rules = newRules;
     }
 }

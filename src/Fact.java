@@ -24,6 +24,10 @@ public class Fact {
         return value;
     }
 
+    public Boolean equals(Fact fact) {
+        return this.variable.equals(fact.variable);
+    }
+
     @Override
     public String toString() {
         return variable.toString() + " = " + value;

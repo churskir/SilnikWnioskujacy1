@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 /**
@@ -44,6 +45,7 @@ public class GUI {
     }
 
     public static void print(String mesg) {
+        System.out.println("GUI: " + mesg);
         outputContent.add(mesg);
         output = new JScrollPane(new JList(outputContent.toArray()));
         outputPanel.remove(output);
@@ -51,7 +53,7 @@ public class GUI {
         outputPanel.updateUI();
     }
 
-    private static void clearOutput() {
+    public static void clearOutput() {
         outputContent.clear();
         outputPanel.remove(output);
         output = new JScrollPane(new JList(outputContent.toArray()));
@@ -103,7 +105,7 @@ public class GUI {
         buttonsPanel.add(ruleType);
         ruleType.setMnemonic(1);
 
-        JPanel manageButtonsPantel = new JPanel(new GridLayout(1, 2));
+        JPanel manageButtonsPanel = new JPanel(new GridLayout(2, 2));
         JButton addThing = new JButton("Dodaj");
         addThing.addActionListener(new ActionListener() {
             @Override
@@ -118,10 +120,10 @@ public class GUI {
                 }
             }
         });
-        manageButtonsPantel.add(addThing);
+        manageButtonsPanel.add(addThing);
 
         JButton delThing = new JButton("Usuń");
-        manageButtonsPantel.add(delThing);
+        manageButtonsPanel.add(delThing);
         delThing.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -129,7 +131,47 @@ public class GUI {
                 updateKnowledge();
             }
         });
-        addPanel.add(manageButtonsPantel, BorderLayout.SOUTH);
+
+        JButton editButton = new JButton("Edytuj");
+        manageButtonsPanel.add(editButton);
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int index = inputList.getSelectedIndex();
+                ArrayList<Fact> facts = new ArrayList<>(SilnikWnioskujacy.getFacts());
+                if (index < 0)
+                    return;
+                if (index < facts.size()) {
+                    content.setText(facts.get(index).toString());
+                    factType.setSelected(TRUE);
+                }
+                else {
+                    ArrayList<Rule> rules = new ArrayList<>(SilnikWnioskujacy.getRules());
+                    index -= facts.size();
+                    content.setText(rules.get(index).toString());
+                    ruleType.setSelected(TRUE);
+                }
+            }
+        });
+
+        JButton saveButton = new JButton("Zmień");
+        manageButtonsPanel.add(saveButton);
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (content.getText().equals(""))
+                    return;
+                SilnikWnioskujacy.deleteThing(inputList.getSelectedIndex());
+                if (typeButtons.getSelection().getMnemonic() == 0)
+                    SilnikWnioskujacy.addFact(new Fact(content.getText()));
+                else
+                    SilnikWnioskujacy.addRule(new Rule(content.getText()));
+                content.setText("");
+                updateKnowledge();
+            }
+        });
+
+        addPanel.add(manageButtonsPanel, BorderLayout.SOUTH);
     }
 
     private static void setSearch(JPanel search) {
@@ -161,10 +203,14 @@ public class GUI {
                                               if (wanted.getText().equals(""))
                                                   GUI.print("Podaj szukaną.");
                                               else {
-                                                  if (buttons.getSelection().getMnemonic() == 0)
+                                                  if (buttons.getSelection().getMnemonic() == 0) {
                                                       SilnikWnioskujacy.setMode(Mode.backward);
-                                                  else
+                                                      GUI.print("WYSZUKIWANIE WSTECZ");
+                                                  } else {
                                                       SilnikWnioskujacy.setMode(Mode.forward);
+                                                      GUI.print("WYSZUKIWANIE W PRZÓD");
+                                                  }
+                                                  GUI.print(" ");
                                                   SilnikWnioskujacy.setWanted(new Variable(wanted.getText()));
                                                   Solver.solve(SilnikWnioskujacy.getFacts(),
                                                           SilnikWnioskujacy.getRules(),

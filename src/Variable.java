@@ -27,10 +27,15 @@ public class Variable extends Equation {
         if (mode.equals(Mode.backward))
             for (Rule rule: rules) {
                 if (rule.getResult().equals(this)) {
-                    Boolean res = rule.solve(facts);
-                    SilnikWnioskujacy.addFact(new Fact(this, res));
-                    GUI.print("Z reguły " + rule + " wynika:   " + this + " = " + res);
-                    return rule.solve(facts);
+                    try {
+                        Boolean res = rule.solve(facts);
+                        GUI.print("Z reguły " + rule + " wynika:   " + this + " = " + res);
+                        SilnikWnioskujacy.addFact(new Fact(this, res));
+                        return rule.solve(facts);
+                    } catch (NoFactException e) {
+                        GUI.print("Z reguły " + rule + " nie udało się znaleźć szukanej.");
+                        GUI.print(" ");
+                    }
                 }
             }
         throw new NoFactException();

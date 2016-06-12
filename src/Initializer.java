@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by Radek on 2016-06-10.
@@ -56,10 +57,9 @@ public class Initializer {
     }
 
     private static void readRules(BufferedReader br) {
-        Collection<Rule> rules = SilnikWnioskujacy.getRules();
         for (int i = 0; i < rulesNumber; i++) {
             try {
-                rules.add(new Rule(br.readLine()));
+                SilnikWnioskujacy.addRule(new Rule(br.readLine()));
             } catch (IOException e) {
                 return;
             }
