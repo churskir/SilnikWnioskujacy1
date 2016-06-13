@@ -26,9 +26,9 @@ public class OneArgumentEquation extends Equation {
 
     @Override
     public String toString() {
-        String tmp = operator.toString() + equation.toString();
+        String tmp = operator.toString() + " " + equation.toString();
         if (operator.toString() == "(")
-            tmp += ")";
+            tmp += " )";
         return tmp;
     }
 }

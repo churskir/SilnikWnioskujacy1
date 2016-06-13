@@ -13,7 +13,8 @@ public class Fact {
     public Fact(String in) {
         String[] splitedIn = in.split(" = ");
         this.variable = new Variable(splitedIn[0]);
-        this.value = !splitedIn[1].equals("0");
+        this.value = !splitedIn[1].equals("0") && !splitedIn[1].equals("false")
+                && !splitedIn[1].equals("False") && !splitedIn[1].equals("FALSE");
     }
 
     public Variable getVariable() {

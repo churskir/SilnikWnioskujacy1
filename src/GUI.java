@@ -182,18 +182,20 @@ public class GUI {
         JTextField wanted = new JTextField(SilnikWnioskujacy.getWanted().toString());
         wantedPanel.add(wanted);
 
-        ButtonGroup buttons = new ButtonGroup();
+        ButtonGroup radioButtons = new ButtonGroup();
         JPanel buttonsPanel = new JPanel(new GridLayout(1, 2));
         search.add(buttonsPanel, BorderLayout.CENTER);
         JRadioButton backwardButton = new JRadioButton("Wstecz");
         backwardButton.setSelected(TRUE);
-        buttons.add(backwardButton);
+        radioButtons.add(backwardButton);
         buttonsPanel.add(backwardButton);
         backwardButton.setMnemonic(0);
         JRadioButton forwardButton = new JRadioButton("W przód");
-        buttons.add(forwardButton);
+        radioButtons.add(forwardButton);
         buttonsPanel.add(forwardButton);
         forwardButton.setMnemonic(1);
+
+        JPanel buttons = new JPanel(new GridLayout(2, 1));
 
         JButton startButton = new JButton("Start");
         startButton.addActionListener(new ActionListener() {
@@ -203,7 +205,7 @@ public class GUI {
                                               if (wanted.getText().equals(""))
                                                   GUI.print("Podaj szukaną.");
                                               else {
-                                                  if (buttons.getSelection().getMnemonic() == 0) {
+                                                  if (radioButtons.getSelection().getMnemonic() == 0) {
                                                       SilnikWnioskujacy.setMode(Mode.backward);
                                                       GUI.print("WYSZUKIWANIE WSTECZ");
                                                   } else {
@@ -220,6 +222,21 @@ public class GUI {
                                               }
                                           }
                                       });
-        search.add(startButton, BorderLayout.SOUTH);
+        buttons.add(startButton);
+
+        JButton saveButton = new JButton("Zapisz");
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (radioButtons.getSelection().getMnemonic() == 0)
+                    SilnikWnioskujacy.setMode(Mode.backward);
+                else
+                    SilnikWnioskujacy.setMode(Mode.forward);
+                Finalizer.save();
+            }
+        });
+        buttons.add(saveButton);
+
+        search.add(buttons, BorderLayout.SOUTH);
     }
 }

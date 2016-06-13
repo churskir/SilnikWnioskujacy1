@@ -10,12 +10,11 @@ public class SilnikWnioskujacy {
     private static Collection<Rule> rules = new ArrayList<>();
     private static Variable wanted;
     private static Mode mode = Mode.backward;
+    public static String sourcePath = "C:/Users/Radek/Documents/dane.txt";
 
     public static void main(String[] args) {
         Initializer.Initialize();
         GUI.openWindow();
-        Rule rule = new Rule("A = B + C");
-        Rule rule2 = new Rule("A = B + C");
     }
 
     public static Collection<Fact> getFacts() {

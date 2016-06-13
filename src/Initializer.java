@@ -10,7 +10,6 @@ import java.util.Collections;
  */
 public class Initializer {
 
-    private static String sourcePath = "C:/Users/Radek/Documents/dane.txt";
     private static Integer factsNumber = 0;
     private static Integer rulesNumber = 0;
 
@@ -18,7 +17,7 @@ public class Initializer {
         BufferedReader br = null;
         try {
             String currentLine;
-            br = new BufferedReader(new FileReader(sourcePath));
+            br = new BufferedReader(new FileReader(SilnikWnioskujacy.sourcePath));
             setFactsNumber(br);
             readFacts(br);
             setRulesNumber(br);
