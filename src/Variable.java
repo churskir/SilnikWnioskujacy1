@@ -27,6 +27,7 @@ public class Variable extends Equation {
         if (mode.equals(Mode.backward))
             for (Rule rule: rules) {
                 if (rule.getResult().equals(this)) {
+                    GUI.print("Próbuję rozwiązać " + rule);
                     try {
                         Boolean res = rule.solve(facts);
                         GUI.print("Z reguły " + rule + " wynika:   " + this + " = " + res);
